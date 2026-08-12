@@ -20,7 +20,7 @@ def create_table_if_not_exists(cursor):
     cursor.execute(create_table_query)
 
 def extract_data():
-    # CoinCap badulu Binance API vadutunnam (No DNS blocks)
+    # using binance api (NO DNS blocks )
     print("Extracting data from Binance API...")
     url = "https://api.binance.com/api/v3/ticker/price"
     response = requests.get(url)
@@ -44,11 +44,11 @@ def load_data(data):
         
         print("Loading data into PostgreSQL...")
         for coin in data:
-            # Binance nunchi 'price' and 'symbol' vastundi
+            # Binance fetch  'price' and 'symbol' 
             price = round(float(coin['price']), 2) 
             current_time = datetime.now()
             
-            # Name and Symbol rendu chotla coin['symbol'] isthunnam (e.g., BTCUSDT)
+            # Name and Symbol two of  coin['symbol'] (e.g., BTCUSDT)
             cursor.execute(insert_query, (coin['symbol'], coin['symbol'], price, current_time))
             
         conn.commit()
